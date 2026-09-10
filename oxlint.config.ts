@@ -28,6 +28,8 @@ module.exports = defineConfig({
     'packages/**/storybook-static/**',
     'v2-refactor-temp/**'
   ],
+  // @eslint-react 1.53.1 and 5.19.0 crash on load because their Compiler API dependencies do not support TS7.
+  // Keep the uncovered rules local and lock their compatibility boundaries with fixtures.
   jsPlugins: [{ name: 'cherry', specifier: './scripts/lint/cherryPlugin.mjs' }],
   options: {
     // Legacy ESLint suppressions must not affect Oxlint after the migration.

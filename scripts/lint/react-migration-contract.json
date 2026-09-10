@@ -64,7 +64,10 @@
       "before": { "rule": "@eslint-react/no-children-map", "severity": "warn" },
       "after": { "rule": "cherry/react-no-children-methods", "severity": "warn", "implementation": "local" },
       "scope": "repository",
-      "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "Children.map" }
+      "fixture": {
+        "file": "negative/src/renderer/components/ReactRecommended.tsx",
+        "token": "{Children.map(children"
+      }
     },
     {
       "before": { "rule": "@eslint-react/no-children-only", "severity": "warn" },

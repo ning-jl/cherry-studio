@@ -722,10 +722,11 @@ const isFunctionNode = (node) =>
   node?.type === 'ArrowFunctionExpression'
 
 const functionName = (node) => {
-  if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression') return node.id?.name ?? null
+  if (node.type === 'FunctionDeclaration') return node.id?.name ?? null
   const parent = node.parent
   if (parent?.type === 'VariableDeclarator' && parent.id.type === 'Identifier') return parent.id.name
   if (parent?.type === 'PropertyDefinition' || parent?.type === 'MethodDefinition') return propertyName(parent.key)
+  if (node.type === 'FunctionExpression') return node.id?.name ?? null
   return null
 }
 
@@ -802,6 +803,38 @@ const assignmentTargetKey = (node) => {
     if (parent.type === 'BlockStatement' || parent.type === 'Program' || isFunctionNode(parent)) return null
   }
   return null
+}
+
+const assignmentTarget = (node) => {
+  let child = node
+  for (let parent = node.parent; parent; child = parent, parent = parent.parent) {
+    if (parent.type === 'VariableDeclarator' && parent.init === child) return parent.id
+    if (parent.type === 'AssignmentExpression' && parent.right === child) return parent.left
+    if (parent.type === 'BlockStatement' || parent.type === 'Program' || isFunctionNode(parent)) return null
+  }
+  return null
+}
+
+const findVariable = (context, node) => {
+  for (let scope = context.sourceCode.getScope(node); scope; scope = scope.upper) {
+    const variable = scope.set?.get(node.name) ?? scope.variables?.find((candidate) => candidate.name === node.name)
+    if (variable) return variable
+  }
+  return null
+}
+
+const isSameReference = (context, left, right) => {
+  if (!left || !right || left.type !== right.type) return false
+  if (left.type === 'Identifier') {
+    const leftVariable = findVariable(context, left)
+    const rightVariable = findVariable(context, right)
+    return leftVariable && rightVariable ? leftVariable === rightVariable : left.name === right.name
+  }
+  if (left.type === 'ThisExpression') return true
+  if (left.type !== 'MemberExpression' || left.computed !== right.computed) return false
+  return (
+    propertyName(left.property) === propertyName(right.property) && isSameReference(context, left.object, right.object)
+  )
 }
 
 const makeForbiddenImportedCallRule = ({ source, name, message, reportImport = false }) => ({
@@ -883,7 +916,7 @@ const reactNoContextProvider = {
         if (
           name.type === 'JSXMemberExpression' &&
           propertyName(name.property) === 'Provider' &&
-          isComponentName(propertyName(name.object.property ?? name.object))
+          propertyName(name.object.property ?? name.object)
         ) {
           context.report({ node: name, messageId: 'forbidden' })
         }
@@ -1007,12 +1040,10 @@ const reactNoChildrenMethods = {
     const forbidden = new Set(['count', 'forEach', 'map', 'only'])
     return {
       ImportDeclaration: react.record,
-      CallExpression(node) {
-        const callee = node.callee
-        if (callee.type !== 'MemberExpression') return
-        const method = propertyName(callee.property)
+      MemberExpression(node) {
+        const method = propertyName(node.property)
         if (!forbidden.has(method)) return
-        const object = callee.object
+        const object = node.object
         const isNamedChildren = object.type === 'Identifier' && react.importedNames('Children').has(object.name)
         const isNamespacedChildren =
           object.type === 'MemberExpression' &&
@@ -1020,7 +1051,7 @@ const reactNoChildrenMethods = {
           react.isNamespace(object.object.name) &&
           propertyName(object.property) === 'Children'
         if (isNamedChildren || isNamespacedChildren) {
-          context.report({ node, messageId: 'forbidden', data: { method } })
+          context.report({ node: node.property, messageId: 'forbidden', data: { method } })
         }
       }
     }
@@ -1136,7 +1167,8 @@ const reactNoNestedLazyComponentDeclarations = {
       for (let parent = node.parent; parent; parent = parent.parent) {
         if (isFunctionNode(parent)) {
           const name = functionName(parent)
-          return isComponentName(name) || /^use[A-Z0-9]/.test(name ?? '')
+          if (isComponentName(name) || /^use[A-Z0-9]/.test(name ?? '')) return true
+          continue
         }
         if (
           (parent.type === 'ClassDeclaration' || parent.type === 'ClassExpression') &&
@@ -1348,30 +1380,33 @@ const reactNoLeakedInterval = {
     const functions = []
     const classes = []
     const methods = []
-    const enterFunction = (node) =>
-      functions.push(effectCallback(node) ? { intervals: new Map(), clears: new Set() } : null)
+    const enterFunction = (node) => functions.push(effectCallback(node) ? { intervals: [], clears: [] } : null)
     const exitFunction = () => {
       const current = functions.pop()
       if (!current) return
-      for (const [key, node] of current.intervals) {
-        if (!current.clears.has(key)) context.report({ node, messageId: 'cleanup' })
+      for (const interval of current.intervals) {
+        if (!current.clears.some((clear) => isSameReference(context, interval.target, clear))) {
+          context.report({ node: interval.node, messageId: 'cleanup' })
+        }
       }
     }
     const enterClass = (node) => {
-      classes.push(isReactComponentClass(node, react) ? { intervals: new Map(), clears: new Set() } : null)
+      classes.push(isReactComponentClass(node, react) ? { intervals: [], clears: [] } : null)
     }
     const exitClass = () => {
       const current = classes.pop()
       if (!current) return
-      for (const [key, node] of current.intervals) {
-        if (!current.clears.has(key)) context.report({ node, messageId: 'unmount' })
+      for (const interval of current.intervals) {
+        if (!current.clears.some((clear) => isSameReference(context, interval.target, clear))) {
+          context.report({ node: interval.node, messageId: 'unmount' })
+        }
       }
     }
     const enterMethod = (node) => methods.push(propertyName(node.key))
     const recordSet = (node, target) => {
-      const key = assignmentTargetKey(node)
-      if (!key) context.report({ node, messageId: 'id' })
-      else target.intervals.set(key, node)
+      const intervalTarget = assignmentTarget(node)
+      if (!intervalTarget) context.report({ node, messageId: 'id' })
+      else target.intervals.push({ target: intervalTarget, node })
     }
     return {
       ImportDeclaration: react.record,
@@ -1401,10 +1436,10 @@ const reactNoLeakedInterval = {
           if (effect) recordSet(node, effect)
           else if (component && methods.at(-1) === 'componentDidMount') recordSet(node, component)
         } else if (name === 'clearInterval') {
-          const key = expressionKey(node.arguments[0])
-          if (!key) return
-          if (effect) effect.clears.add(key)
-          if (component && methods.at(-1) === 'componentWillUnmount') component.clears.add(key)
+          const target = node.arguments[0]
+          if (!target) return
+          if (effect) effect.clears.push(target)
+          if (component && methods.at(-1) === 'componentWillUnmount') component.clears.push(target)
         }
       }
     }
