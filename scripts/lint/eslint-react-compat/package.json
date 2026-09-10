@@ -1,0 +1,10 @@
+{
+  "name": "@cherrystudio/eslint-react-compat",
+  "private": true,
+  "type": "module",
+  "main": "./index.mjs",
+  "dependencies": {
+    "@eslint-react/eslint-plugin": "5.19.0",
+    "typescript": "npm:@typescript/typescript6@6.0.2"
+  }
+}

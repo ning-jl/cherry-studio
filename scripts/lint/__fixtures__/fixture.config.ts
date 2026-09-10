@@ -16,9 +16,7 @@ const localRules = [
   'no-direct-quit',
   'no-template-in-t',
   'prefer-zod-namespace',
-  'no-prop-types',
-  'dynamic-react-children-map',
-  'dynamic-react-clone-element'
+  'no-prop-types'
 ]
 
 const reactMigrationRules = {
@@ -43,30 +41,36 @@ const reactMigrationRules = {
   'react/no-will-update-set-state': 'warn',
   'react/void-dom-elements-no-children': 'error',
   'cherry/no-prop-types': 'error',
-  'cherry/react-context-name': 'warn',
-  'cherry/react-dom-no-flush-sync': 'error',
-  'cherry/react-dom-no-hydrate': 'error',
-  'cherry/react-dom-no-render': 'error',
-  'cherry/react-dom-no-use-form-state': 'error',
-  'cherry/react-no-access-state-in-setstate': 'error',
-  'cherry/react-no-children-methods': 'warn',
-  'cherry/react-no-context-provider': 'warn',
-  'cherry/react-no-create-ref': 'error',
+  '@eslint-react/dom-no-flush-sync': 'error',
+  '@eslint-react/dom-no-hydrate': 'error',
+  '@eslint-react/dom-no-render': 'error',
+  '@eslint-react/dom-no-use-form-state': 'error',
+  '@eslint-react/naming-convention-context-name': 'warn',
+  '@eslint-react/no-access-state-in-setstate': 'error',
+  '@eslint-react/no-children-count': 'warn',
+  '@eslint-react/no-children-for-each': 'warn',
+  '@eslint-react/no-children-map': 'warn',
+  '@eslint-react/no-children-only': 'warn',
+  '@eslint-react/no-context-provider': 'warn',
+  '@eslint-react/no-create-ref': 'error',
   'cherry/react-no-default-props': 'error',
-  'cherry/react-no-forward-ref': 'warn',
+  '@eslint-react/no-forward-ref': 'warn',
   'cherry/react-no-implicit-key': 'warn',
-  'cherry/react-no-leaked-interval': 'warn',
-  'cherry/react-no-leaked-resize-observer': 'warn',
-  'cherry/react-no-misused-capture-owner-stack': 'error',
-  'cherry/react-no-nested-lazy-component-declarations': 'warn',
-  'cherry/react-no-unused-class-component-members': 'warn',
+  '@eslint-react/no-misused-capture-owner-stack': 'error',
+  '@eslint-react/no-nested-lazy-component-declarations': 'warn',
+  '@eslint-react/no-unused-class-component-members': 'warn',
   'cherry/react-no-unused-state': 'warn',
-  'cherry/react-no-use-context': 'warn'
+  'cherry/react-no-use-context': 'warn',
+  '@eslint-react/web-api-no-leaked-interval': 'warn',
+  '@eslint-react/web-api-no-leaked-resize-observer': 'warn'
 }
 
 module.exports = defineConfig({
   categories: {},
-  jsPlugins: [{ name: 'cherry', specifier: '../cherryPlugin.mjs' }],
+  jsPlugins: [
+    { name: 'cherry', specifier: '../cherryPlugin.mjs' },
+    { name: '@eslint-react', specifier: '../eslint-react-compat/index.mjs' }
+  ],
   plugins: ['react'],
   rules: {
     ...Object.fromEntries(localRules.map((rule) => [`cherry/${rule}`, 'error'])),
@@ -85,8 +89,8 @@ module.exports = defineConfig({
       rules: { 'react/rules-of-hooks': 'error' }
     },
     {
-      files: ['negative/src/renderer/components/ReactRecommended.tsx'],
-      rules: { 'cherry/dynamic-react-clone-element': 'off' }
+      files: ['negative/src/renderer/components/DynamicReact.ts'],
+      rules: { '@eslint-react/no-clone-element': 'error' }
     }
   ]
 })

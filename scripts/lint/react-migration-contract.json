@@ -41,7 +41,11 @@
     },
     {
       "before": { "rule": "@eslint-react/no-access-state-in-setstate", "severity": "error" },
-      "after": { "rule": "cherry/react-no-access-state-in-setstate", "severity": "error", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/no-access-state-in-setstate",
+        "severity": "error",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": {
         "file": "negative/src/renderer/components/ReactRecommendedClass.tsx",
@@ -50,19 +54,27 @@
     },
     {
       "before": { "rule": "@eslint-react/no-children-count", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-children-methods", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/no-children-count",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "Children.count" }
     },
     {
       "before": { "rule": "@eslint-react/no-children-for-each", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-children-methods", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/no-children-for-each",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "Children.forEach" }
     },
     {
       "before": { "rule": "@eslint-react/no-children-map", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-children-methods", "severity": "warn", "implementation": "local" },
+      "after": { "rule": "@eslint-react/no-children-map", "severity": "warn", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": {
         "file": "negative/src/renderer/components/ReactRecommended.tsx",
@@ -71,7 +83,7 @@
     },
     {
       "before": { "rule": "@eslint-react/no-children-only", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-children-methods", "severity": "warn", "implementation": "local" },
+      "after": { "rule": "@eslint-react/no-children-only", "severity": "warn", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "Children.only" }
     },
@@ -119,7 +131,11 @@
     },
     {
       "before": { "rule": "@eslint-react/no-context-provider", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-context-provider", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/no-context-provider",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": {
         "file": "negative/src/renderer/components/ReactRecommended.tsx",
@@ -128,7 +144,7 @@
     },
     {
       "before": { "rule": "@eslint-react/no-create-ref", "severity": "error" },
-      "after": { "rule": "cherry/react-no-create-ref", "severity": "error", "implementation": "local" },
+      "after": { "rule": "@eslint-react/no-create-ref", "severity": "error", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseNoCreateRef =" }
     },
@@ -158,7 +174,7 @@
     },
     {
       "before": { "rule": "@eslint-react/no-forward-ref", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-forward-ref", "severity": "warn", "implementation": "local" },
+      "after": { "rule": "@eslint-react/no-forward-ref", "severity": "warn", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseNoForwardRef =" }
     },
@@ -177,9 +193,9 @@
     {
       "before": { "rule": "@eslint-react/no-misused-capture-owner-stack", "severity": "error" },
       "after": {
-        "rule": "cherry/react-no-misused-capture-owner-stack",
+        "rule": "@eslint-react/no-misused-capture-owner-stack",
         "severity": "error",
-        "implementation": "local"
+        "implementation": "upstream-js-plugin"
       },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseCaptureOwnerStack =" }
@@ -187,9 +203,9 @@
     {
       "before": { "rule": "@eslint-react/no-nested-lazy-component-declarations", "severity": "warn" },
       "after": {
-        "rule": "cherry/react-no-nested-lazy-component-declarations",
+        "rule": "@eslint-react/no-nested-lazy-component-declarations",
         "severity": "warn",
-        "implementation": "local"
+        "implementation": "upstream-js-plugin"
       },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "CaseNestedLazy =" }
@@ -279,9 +295,9 @@
     {
       "before": { "rule": "@eslint-react/no-unused-class-component-members", "severity": "warn" },
       "after": {
-        "rule": "cherry/react-no-unused-class-component-members",
+        "rule": "@eslint-react/no-unused-class-component-members",
         "severity": "warn",
-        "implementation": "local"
+        "implementation": "upstream-js-plugin"
       },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommendedClass.tsx", "token": "unusedMember()" }
@@ -321,13 +337,17 @@
     },
     {
       "before": { "rule": "@eslint-react/dom/no-flush-sync", "severity": "error" },
-      "after": { "rule": "cherry/react-dom-no-flush-sync", "severity": "error", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/dom-no-flush-sync",
+        "severity": "error",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseFlushSync =" }
     },
     {
       "before": { "rule": "@eslint-react/dom/no-hydrate", "severity": "error" },
-      "after": { "rule": "cherry/react-dom-no-hydrate", "severity": "error", "implementation": "local" },
+      "after": { "rule": "@eslint-react/dom-no-hydrate", "severity": "error", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseHydrate =" }
     },
@@ -351,7 +371,7 @@
     },
     {
       "before": { "rule": "@eslint-react/dom/no-render", "severity": "error" },
-      "after": { "rule": "cherry/react-dom-no-render", "severity": "error", "implementation": "local" },
+      "after": { "rule": "@eslint-react/dom-no-render", "severity": "error", "implementation": "upstream-js-plugin" },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseNoRender =" }
     },
@@ -384,7 +404,11 @@
     },
     {
       "before": { "rule": "@eslint-react/dom/no-use-form-state", "severity": "error" },
-      "after": { "rule": "cherry/react-dom-no-use-form-state", "severity": "error", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/dom-no-use-form-state",
+        "severity": "error",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseUseFormState =" }
     },
@@ -396,7 +420,11 @@
     },
     {
       "before": { "rule": "@eslint-react/web-api/no-leaked-interval", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-leaked-interval", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/web-api-no-leaked-interval",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": {
         "file": "negative/src/renderer/components/ReactRecommendedResources.tsx",
@@ -405,16 +433,24 @@
     },
     {
       "before": { "rule": "@eslint-react/web-api/no-leaked-resize-observer", "severity": "warn" },
-      "after": { "rule": "cherry/react-no-leaked-resize-observer", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/web-api-no-leaked-resize-observer",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": {
         "file": "negative/src/renderer/components/ReactRecommendedResources.tsx",
-        "token": "caseLeakedResizeObserver ="
+        "token": "caseLeakedResizeObserver.observe"
       }
     },
     {
       "before": { "rule": "@eslint-react/naming-convention/context-name", "severity": "warn" },
-      "after": { "rule": "cherry/react-context-name", "severity": "warn", "implementation": "local" },
+      "after": {
+        "rule": "@eslint-react/naming-convention-context-name",
+        "severity": "warn",
+        "implementation": "upstream-js-plugin"
+      },
       "scope": "repository",
       "fixture": { "file": "negative/src/renderer/components/ReactRecommended.tsx", "token": "caseContextName =" }
     }

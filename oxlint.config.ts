@@ -28,9 +28,11 @@ module.exports = defineConfig({
     'packages/**/storybook-static/**',
     'v2-refactor-temp/**'
   ],
-  // @eslint-react 1.53.1 and 5.19.0 crash on load because their Compiler API dependencies do not support TS7.
-  // Keep the uncovered rules local and lock their compatibility boundaries with fixtures.
-  jsPlugins: [{ name: 'cherry', specifier: './scripts/lint/cherryPlugin.mjs' }],
+  // @eslint-react's Compiler API dependencies run in the isolated TS6 workspace package.
+  jsPlugins: [
+    { name: 'cherry', specifier: './scripts/lint/cherryPlugin.mjs' },
+    { name: '@eslint-react', specifier: './scripts/lint/eslint-react-compat/index.mjs' }
+  ],
   options: {
     // Legacy ESLint suppressions must not affect Oxlint after the migration.
     respectEslintDisableDirectives: false,
@@ -143,24 +145,27 @@ module.exports = defineConfig({
     'unicorn/no-useless-spread': 'off',
     'unicorn/prefer-set-size': 'error',
     'unicorn/prefer-string-starts-ends-with': 'error',
+    '@eslint-react/dom-no-flush-sync': 'error',
+    '@eslint-react/dom-no-hydrate': 'error',
+    '@eslint-react/dom-no-render': 'error',
+    '@eslint-react/dom-no-use-form-state': 'error',
+    '@eslint-react/naming-convention-context-name': 'warn',
+    '@eslint-react/no-access-state-in-setstate': 'error',
+    '@eslint-react/no-children-count': 'warn',
+    '@eslint-react/no-children-for-each': 'warn',
+    '@eslint-react/no-children-map': 'warn',
+    '@eslint-react/no-children-only': 'warn',
+    '@eslint-react/no-context-provider': 'warn',
+    '@eslint-react/no-create-ref': 'error',
+    '@eslint-react/no-forward-ref': 'warn',
+    '@eslint-react/no-misused-capture-owner-stack': 'error',
+    '@eslint-react/no-nested-lazy-component-declarations': 'warn',
+    '@eslint-react/no-unused-class-component-members': 'warn',
+    '@eslint-react/web-api-no-leaked-interval': 'warn',
+    '@eslint-react/web-api-no-leaked-resize-observer': 'warn',
     'cherry/no-prop-types': 'error',
-    'cherry/react-context-name': 'warn',
-    'cherry/react-dom-no-flush-sync': 'error',
-    'cherry/react-dom-no-hydrate': 'error',
-    'cherry/react-dom-no-render': 'error',
-    'cherry/react-dom-no-use-form-state': 'error',
-    'cherry/react-no-access-state-in-setstate': 'error',
-    'cherry/react-no-children-methods': 'warn',
-    'cherry/react-no-context-provider': 'warn',
-    'cherry/react-no-create-ref': 'error',
     'cherry/react-no-default-props': 'error',
-    'cherry/react-no-forward-ref': 'warn',
     'cherry/react-no-implicit-key': 'warn',
-    'cherry/react-no-leaked-interval': 'warn',
-    'cherry/react-no-leaked-resize-observer': 'warn',
-    'cherry/react-no-misused-capture-owner-stack': 'error',
-    'cherry/react-no-nested-lazy-component-declarations': 'warn',
-    'cherry/react-no-unused-class-component-members': 'warn',
     'cherry/react-no-unused-state': 'warn',
     'cherry/react-no-use-context': 'warn',
     'cherry/no-template-in-t': 'warn',
@@ -285,15 +290,13 @@ module.exports = defineConfig({
       rules: { 'cherry/path-case': 'error' }
     },
     {
-      // Oxlint's native React rules intentionally follow static React imports. These mocks load
-      // React through vi.importActual(), so the local rules preserve the existing diagnostics.
+      // The native rules miss React loaded through vi.importActual(); the upstream JS rule does not.
       files: [
         'src/renderer/pages/code/components/configEditPanel/tools/__tests__/ClaudeConfigFields.test.tsx',
         'src/renderer/pages/code/components/configEditPanel/tools/__tests__/CliConfigFields.test.tsx'
       ],
       rules: {
-        'cherry/dynamic-react-children-map': 'warn',
-        'cherry/dynamic-react-clone-element': 'warn'
+        '@eslint-react/no-clone-element': 'warn'
       }
     },
     {

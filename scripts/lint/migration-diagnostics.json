@@ -9,37 +9,37 @@
         "count": 4
       },
       "after": {
-        "rules": ["cherry(dynamic-react-children-map)"],
+        "rules": ["@eslint-react(no-children-map)"],
         "severity": "warning",
         "count": 4,
         "diagnostics": [
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/ClaudeConfigFields.test.tsx",
             68,
-            12,
-            "cherry(dynamic-react-children-map)",
-            "`React.Children.map` should not be used."
+            27,
+            "@eslint-react(no-children-map)",
+            "Using 'Children.map' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/ClaudeConfigFields.test.tsx",
             76,
-            10,
-            "cherry(dynamic-react-children-map)",
-            "`React.Children.map` should not be used."
+            25,
+            "@eslint-react(no-children-map)",
+            "Using 'Children.map' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/CliConfigFields.test.tsx",
             55,
-            12,
-            "cherry(dynamic-react-children-map)",
-            "`React.Children.map` should not be used."
+            27,
+            "@eslint-react(no-children-map)",
+            "Using 'Children.map' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/CliConfigFields.test.tsx",
             63,
-            10,
-            "cherry(dynamic-react-children-map)",
-            "`React.Children.map` should not be used."
+            25,
+            "@eslint-react(no-children-map)",
+            "Using 'Children.map' is uncommon and can lead to fragile code. Use alternatives instead."
           ]
         ]
       }
@@ -52,7 +52,7 @@
         "count": 6
       },
       "after": {
-        "rules": ["react(no-clone-element)", "cherry(dynamic-react-clone-element)"],
+        "rules": ["react(no-clone-element)", "@eslint-react(no-clone-element)"],
         "severity": "warning",
         "count": 6,
         "diagnostics": [
@@ -74,29 +74,29 @@
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/ClaudeConfigFields.test.tsx",
             69,
             43,
-            "cherry(dynamic-react-clone-element)",
-            "`React.cloneElement` should not be used."
+            "@eslint-react(no-clone-element)",
+            "Using 'cloneElement' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/ClaudeConfigFields.test.tsx",
             77,
             41,
-            "cherry(dynamic-react-clone-element)",
-            "`React.cloneElement` should not be used."
+            "@eslint-react(no-clone-element)",
+            "Using 'cloneElement' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/CliConfigFields.test.tsx",
             56,
             43,
-            "cherry(dynamic-react-clone-element)",
-            "`React.cloneElement` should not be used."
+            "@eslint-react(no-clone-element)",
+            "Using 'cloneElement' is uncommon and can lead to fragile code. Use alternatives instead."
           ],
           [
             "src/renderer/pages/code/components/configEditPanel/tools/__tests__/CliConfigFields.test.tsx",
             64,
             41,
-            "cherry(dynamic-react-clone-element)",
-            "`React.cloneElement` should not be used."
+            "@eslint-react(no-clone-element)",
+            "Using 'cloneElement' is uncommon and can lead to fragile code. Use alternatives instead."
           ]
         ]
       }

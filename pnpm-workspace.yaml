@@ -1,5 +1,6 @@
 packages:
   - "packages/*"
+  - "scripts/lint/eslint-react-compat"
 
 overrides:
   picomatch: "4.0.4"
